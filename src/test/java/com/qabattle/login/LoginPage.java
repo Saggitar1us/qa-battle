@@ -5,9 +5,9 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import com.qabattle.util.allure.AllureLogger;
 import io.qameta.allure.Step;
-import lombok.Getter;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
+
+import java.util.UUID;
 
 import static com.codeborne.selenide.Selenide.*;
 
@@ -15,7 +15,6 @@ import static com.codeborne.selenide.Selenide.*;
  * @author Aleksei Stepanov
  */
 
-@Getter
 public class LoginPage {
 
     private final SelenideElement page = $("#registrationContainer");
@@ -30,51 +29,50 @@ public class LoginPage {
 
     private final SelenideElement titleSite = $(".card-header ");
 
-
     private SelenideElement getInputField(String attr, String value) {
         return $$(".form-group").findBy(Condition.attribute(attr, value));
     }
 
-    public void hoverSubmitBtn(WebDriver driver) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
+    public void hoverSubmitBtn() {
+        JavascriptExecutor js = (JavascriptExecutor) WebDriverRunner.getWebDriver();
         js.executeScript("$('button').trigger('mouseenter')");
     }
 
     @Step("Checking view index page on the site")
     public LoginPage checkViewForm() {
         page.shouldBe(Condition.visible.because("The index page didn't load"));
-        loginForm.shouldBe(Condition.visible.because("Form login isn't show"));
+        loginForm.shouldBe(Condition.visible.because("Form login didn't show"));
         AllureLogger.attachScreenshot("Login form");
         return this;
     }
 
     @Step("Checking view login field on login form")
     public LoginPage checkLoginField() {
-        getInputField("onclick", "startInputLogin()").shouldBe(Condition.visible.because("Field <input> isn't show"));
+        getInputField("onclick", "startInputLogin()").shouldBe(Condition.visible.because("Field <input> didn't show"));
         return this;
     }
 
     @Step("Checking view password field on login form")
     public LoginPage checkPasswordField() {
-        inputPassword.shouldBe(Condition.visible.because("Field <password> isn't show"));
+        inputPassword.shouldBe(Condition.visible.because("Field <password> didn't show"));
         return this;
     }
 
     @Step("Checking sign in on the site for user")
     public LoginPage checkSignIn() {
         getInputField("onclick", "startInputLogin()").click();
-        getInputLogin().sendKeys("test");
+        inputLogin.sendKeys("test");
         getInputField("onclick", "startInputPassword()").click();
-        getInputPassword().sendKeys("test");
-        hoverSubmitBtn(WebDriverRunner.getWebDriver());
-        btnSignIn.shouldBe(Condition.visible.because("Button <Sign in> ins't show")).click();
+        inputPassword.sendKeys("test");
+        hoverSubmitBtn();
+        btnSignIn.shouldBe(Condition.visible.because("Button <Sign in> didn't show")).click();
         return this;
     }
 
     @Step("Checking view title on the site")
     public LoginPage checkTitle() {
-        getTitleSite().shouldBe(Condition.visible.because("Title by the site isn't show"));
-        AllureLogger.saveTextLog("Title", getTitleSite().getText());
+        titleSite.shouldBe(Condition.visible.because("Title by the site didn't show"));
+        AllureLogger.saveTextLog("Title", titleSite.getText());
         return this;
     }
 
@@ -104,12 +102,25 @@ public class LoginPage {
     public LoginPage checkWithEmptyData() {
         dismiss("Are you sure you want to login?");
         getInputField("onclick", "startInputLogin()").click();
-        getInputLogin().setValue("");
+        inputLogin.setValue("");
         getInputField("onclick", "startInputPassword()").click();
-        getInputPassword().setValue("");
+        inputPassword.setValue("");
         // I think it is necessary
-        btnSignIn.shouldBe(Condition.visible.because("Button <Sign in> ins't show")).click();
+        btnSignIn.shouldBe(Condition.visible.because("Button <Sign in> didn't show")).click();
         confirm("Fill the fields login/password");
+        return this;
+    }
+
+    @Step("Checking sign in with wrong user data")
+    public LoginPage checkWrondData() {
+        getInputField("onclick", "startInputLogin()").click();
+        inputLogin.sendKeys(UUID.randomUUID().toString());
+        getInputField("onclick", "startInputPassword()").click();
+        inputPassword.setValue(UUID.randomUUID().toString());
+        hoverSubmitBtn();
+        btnSignIn.shouldBe(Condition.visible.because("Button <Sign in> didn't show")).click();
+        // I think it is necessary
+        confirm("Login or password ins't correct");
         return this;
     }
 

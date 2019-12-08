@@ -24,7 +24,7 @@ public class Waiter {
 
     /**
      * @param changedText value by which the text should change
-     * {@literal This method until the TEXT in the specified SelenideElement begins to change to the value changedText}
+     *                    {@literal This method until the TEXT in the specified SelenideElement begins to change to the value changedText}
      */
     public static <T extends SelenideElement> void waitUnChangeText(T element, String changedText) {
         try {
@@ -64,7 +64,7 @@ public class Waiter {
 
     /**
      * @param changedValue value by which should change
-     * {@literal This method waits until the value in the specified SelenideElement changes to the value changedValue}
+     *                     {@literal This method waits until the value in the specified SelenideElement changes to the value changedValue}
      */
     public static <T extends SelenideElement> void waitFinishChangeValue(T element, String changedValue) {
         try {

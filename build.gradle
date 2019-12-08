@@ -48,6 +48,7 @@ dependencies {
     compile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: junitVersion
     compile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junitVersion
     compile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitVersion
+    compile group: 'org.assertj', name: 'assertj-core', version: '3.13.2'
     implementation group: "com.squareup.okhttp3", name: "logging-interceptor", version: "3.14.2"
     compile group: 'ru.yandex.qatools.properties', name: 'properties-loader', version: '1.5'
 }

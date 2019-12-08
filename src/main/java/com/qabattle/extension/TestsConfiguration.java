@@ -22,8 +22,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
 
-import static com.codeborne.selenide.Selenide.close;
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.WebDriverRunner.closeWebDriver;
 import static com.qabattle.configuration.WebConfig.getConfig;
 
 
@@ -49,7 +49,7 @@ public class TestsConfiguration implements BeforeEachCallback, AfterEachCallback
         Configuration.headless = config.isHeadless();
         Configuration.browserCapabilities = new DesiredCapabilities();
         Configuration.browserCapabilities.setAcceptInsecureCerts(true);
-        Configuration.reportsFolder = "./build/test-screens/";
+//        Configuration.reportsFolder = "./build/test-screens/";
 
         open(getConfig().getUrl());
         Set<Annotation> userAnnotations = AnnotationExtractor.getAnnotations(context);
@@ -84,10 +84,10 @@ public class TestsConfiguration implements BeforeEachCallback, AfterEachCallback
     private void setWebDriverCookie() {
         WebDriver driver = WebDriverRunner.getWebDriver();
         driver.manage().deleteAllCookies();
-        driver.manage().addCookie(superSeleniumMaster());
+        driver.manage().addCookie(superCookie());
     }
 
-    private Cookie superSeleniumMaster() {
+    private Cookie superCookie() {
         return new Cookie("secret", "IAmSuperSeleniumMaster", "/");
     }
 
@@ -97,7 +97,7 @@ public class TestsConfiguration implements BeforeEachCallback, AfterEachCallback
             AllureLogger.attachScreenshot("Screen Fail: " + context.getDisplayName());
         }
         log.info("Test " + context.getDisplayName() + " is finish");
-        close();
+        closeWebDriver();
     }
 
     @Override

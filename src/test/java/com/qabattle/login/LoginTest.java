@@ -53,9 +53,15 @@ public class LoginTest extends BaseTest {
 
     @Test
     @DisplayName("Sign in on the site with empty user data")
-    void failSignIn() {
+    void emptySignIn() {
         loginPage
                 .checkSignIn()
                 .checkWithEmptyData();
+    }
+
+    @Test
+    @DisplayName("Sing in on the site with wrong user data")
+    void wrongSignIn() {
+        loginPage.checkWrondData();
     }
 }

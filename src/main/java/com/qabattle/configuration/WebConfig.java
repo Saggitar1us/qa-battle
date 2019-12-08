@@ -29,10 +29,10 @@ public class WebConfig {
     private String url = "localhost:8080";
 
     @Property("selenide.timeout")
-    private int timeout = 10_000;
+    private int timeout = 15_000;
 
     @Property("browser.size")
-    private String browserSize = "1440x1024";
+    private String browserSize = "1640x1324";
 
     @Property("selenide.browser")
     private String browser = "chrome";
