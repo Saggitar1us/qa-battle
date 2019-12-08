@@ -1,0 +1,58 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'io.qameta.allure'
+
+group 'com.qa.battle'
+version '0.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "io.qameta.allure:allure-gradle:2.8.1"
+    }
+}
+
+allure {
+    version = '2.8.1'
+    allureJavaVersion = "2.12.1"
+    autoconfigure = true
+    aspectjweaver = true
+    aspectjVersion = '1.9.2'
+}
+
+//def log4jVersion = '2.11.2'
+def lombokVersion = '1.18.6'
+def allureJunitVersion = '2.13.0'
+def junitVersion = '5.5.2'
+
+dependencies {
+    compile group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+    compile group: 'io.qameta.allure', name: 'allure-junit5', version: allureJunitVersion
+    compile group: 'io.qameta.allure', name: 'allure-java-commons', version: allureJunitVersion
+    compile group: 'io.qameta.allure', name: 'allure-selenide', version: allureJunitVersion
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.5'
+    compile 'com.codeborne:selenide:5.5.1'
+    compile group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.4.0'
+    compile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: junitVersion
+    compile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junitVersion
+    compile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitVersion
+    compile group: 'org.assertj', name: 'assertj-core', version: '3.13.2'
+    implementation group: "com.squareup.okhttp3", name: "logging-interceptor", version: "3.14.2"
+    compile group: 'ru.yandex.qatools.properties', name: 'properties-loader', version: '1.5'
+}
+
+test {
+    useJUnitPlatform() { }
+}
